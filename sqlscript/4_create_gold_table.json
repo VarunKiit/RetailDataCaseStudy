@@ -1,0 +1,20 @@
+{
+	"name": "4_create_gold_table",
+	"properties": {
+		"folder": {
+			"name": "retail"
+		},
+		"content": {
+			"query": "USE retail\nGO\n\nCREATE EXTERNAL TABLE gold.retail_table\nWITH(\n    LOCATION = 'gold/retail_data',\n    DATA_SOURCE = [fscasestudy_sncasestudy_dfs_core_windows_net],\n    FILE_FORMAT = [SynapseDelimitedTextFormat]\n)\nAS\nSELECT City, SUM(Total_Amount) AS Revenue,\n       Year,\n       CASE WHEN Month IN('January', 'February', 'March') THEN 1\n            WHEN Month IN('April', 'May', 'June') THEN 2\n            WHEN MONTH IN('July', 'August', 'September') THEN 3\n            ELSE 4\n        END AS Quarter,\n        SUM(Total_Purchases) AS Purchase_Count,\n        CASE WHEN DATENAME(dw, Date) IN('Saturday', 'Sunday') THEN 'WEEKEND'\n        ELSE 'WEEKDAY' END AS Sales_day,\n        SUM(CASE WHEN Payment_Method IN('Credit Card', 'Debit Card') THEN 1 ELSE 0 END) AS card_payment,\n        SUM(CASE WHEN Payment_Method = 'PayPal' THEN 1 ELSE 0 END) AS online_payment,\n        SUM(CASE WHEN Payment_Method = 'Cash' THEN 1 ELSE 0 END) AS cash_payment,\n        SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS Men_purchase,\n        SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS Women_purchase,\n        SUM(CASE WHEN Age BETWEEN 18 AND 25 THEN 1 ELSE 0 END) AS '18-25_age',\n        SUM(CASE WHEN Age BETWEEN 26 AND 50 THEN 1 ELSE 0 END) AS '26-50_age',\n        SUM(CASE WHEN Age BETWEEN 51 AND 70 THEN 1 ELSE 0 END) AS '51-70_age',\n        SUM(CASE WHEN Feedback IN('Bad', 'Average') AND Order_Status IN('Processing', 'Pending', 'Shipped')\n            THEN 1 ELSE 0 END) AS 'Spam_Feedback',\n        SUM(CASE WHEN Feedback IN('Good', 'Excellent') THEN 1 ELSE 0 END) AS 'Genuine_Feedback'\nFROM silver.retail_table\nGROUP BY City,\n         Year,\n         DATENAME(dw, Date),\n         CASE WHEN Month IN('January', 'February', 'March') THEN 1\n            WHEN Month IN('April', 'May', 'June') THEN 2\n            WHEN MONTH IN('July', 'August', 'September') THEN 3\n            ELSE 4 END;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retail",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

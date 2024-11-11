@@ -1,0 +1,20 @@
+{
+	"name": "2_create_silver_retail_table",
+	"properties": {
+		"folder": {
+			"name": "retail"
+		},
+		"content": {
+			"query": "-- create file format csv\nIF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW = 2,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\n-- create external data source\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'fscasestudy_sncasestudy_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [fscasestudy_sncasestudy_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://fscasestudy@sncasestudy.dfs.core.windows.net' \n\t)\nGO\n\n-- create external table retail table\nCREATE EXTERNAL TABLE silver.retail_table (\n\t[Customer_ID] bigint,\n\t[Name] nvarchar(40),\n\t[Email] nvarchar(40),\n\t[Phone] bigint,\n\t[Address] nvarchar(40),\n\t[City] nvarchar(40),\n\t[State] nvarchar(40),\n\t[Zipcode] bigint,\n\t[Country] nvarchar(40),\n\t[Age] bigint,\n\t[Gender] nvarchar(40),\n\t[Income] nvarchar(40),\n\t[Customer_Segment] nvarchar(40),\n\t[Date] nvarchar(40),\n\t[Year] bigint,\n\t[Month] nvarchar(40),\n\t[Time] datetime2(0),\n\t[Total_Purchases] bigint,\n\t[Amount] float,\n\t[Total_Amount] float,\n\t[Product_Category] nvarchar(40),\n\t[Product_Brand] nvarchar(40),\n\t[Product_Type] nvarchar(40),\n\t[Feedback] nvarchar(40),\n\t[Shipping_Method] nvarchar(40),\n\t[Payment_Method] nvarchar(40),\n\t[Order_Status] nvarchar(40),\n\t[Ratings] bigint,\n\t[products] nvarchar(40),\n\t[Transaction_ID] bigint\n\t)\n\tWITH (\n\tLOCATION = 'part-00000-tid-684628613722382651-5f596608-7f88-4eb6-8478-d908d6322416-84-1-c000.csv',\n\tDATA_SOURCE = [fscasestudy_sncasestudy_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM silver.retail_table\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retail",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

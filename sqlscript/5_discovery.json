@@ -1,0 +1,20 @@
+{
+	"name": "5_discovery",
+	"properties": {
+		"folder": {
+			"name": "retail"
+		},
+		"content": {
+			"query": "use retail\n\nSELECT DISTINCT DATENAME(dw, Date) FROM silver.retail_table;\n\nSELECT DISTINCT Payment_Method FROM silver.retail_table\n\nSELECT MIN(Age), MAX(Age) FROM silver.retail_table;\n\nSELECT Total_Amount FROM silver.retail_table WHERE Age BETWEEN 18 AND 25;\n\nSELECT SUM(CASE WHEN Age BETWEEN 18 AND 25 THEN 1 ELSE 0 END), SUM(Total_Amount) AS '18-25'\nFROM silver.retail_table\nGROUP BY Year;\n\nSELECT DISTINCT Feedback FROM silver.retail_table;\nSELECT DISTINCT Order_Status FROM silver.retail_table;\n\nSELECT City, SUM(Total_Amount) AS Revenue,\n       Year,\n       CASE WHEN Month IN('January', 'February', 'March') THEN 1\n            WHEN Month IN('April', 'May', 'June') THEN 2\n            WHEN MONTH IN('July', 'August', 'September') THEN 3\n            ELSE 4\n        END AS Quarter\nFROM silver.retail_table\nGROUP BY City,Year,\n         CASE WHEN Month IN('January', 'February', 'March') THEN 1\n            WHEN Month IN('April', 'May', 'June') THEN 2\n            WHEN MONTH IN('July', 'August', 'September') THEN 3\n            ELSE 4 END;\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "retail",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
