@@ -4,14 +4,14 @@
 2. SqlScript Contains Synapse Analytics workspace queries for final analysis
 3. RetailDataCaseStudy.pbix contains the final PowerBI report
 
-Architecture Used was Medallion architecture
-Bronze -> Silver -> Gold
+4. Architecture Used was Medallion architecture
+5. Bronze -> Silver -> Gold
 
-Silver Layer Preprocessing using DataBricks
-Gold Layer Analayzing using Synapse Workspace
+6. Silver Layer Preprocessing using DataBricks
+7. Gold Layer Analayzing using Synapse Workspace
 
-Group Members :
-Varun Gurramkonda​
-Chinmay Sharma​
-Mrunal Chavan​
-Prasun Rajan​
+8. Group Members :
+9. Varun Gurramkonda​
+10. Chinmay Sharma​
+11. Mrunal Chavan​
+12. Prasun Rajan​
