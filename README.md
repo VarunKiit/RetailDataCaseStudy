@@ -1,4 +1,4 @@
-# RetailDataCaseStudy
+# RetailDataCaseStudy - Azure
 
 1. RetailDataDB.sql File contains Azure Databricks preprocessing queries
 2. SqlScript Contains Synapse Analytics workspace queries for final analysis
